@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "demo-role"
+        vault.hashicorp.com/agent-inject-secret-config.txt: "secret/data/demo/config"
+      labels:
+        app: demo
+    spec:
+      serviceAccountName: vault-demo
+      containers:
+        - name: app
+          image: nginx

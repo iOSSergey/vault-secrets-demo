@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-agent-config
+data:
+  config.hcl: |
+    exit_after_auth = false
+    pid_file = "/home/vault/pidfile"
+    auto_auth {
+      method "kubernetes" {
+        mount_path = "auth/kubernetes"
+        config = {
+          role = "demo-role"
+        }
+      }
+    }
+    sink "file" {
+      config = {
+        path = "/home/vault/.vault-token"
+      }
+    }
